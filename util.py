@@ -273,11 +273,13 @@ def partition_data(X, y, percentile=40, train_size=1000, random_state=1, return_
     # commented for latent space exploration, uncomment otherwise
     # assert (percentile*0.01 * len(y) >= train_size)
     y_percentile = np.nanpercentile(y, percentile)
-    idx = np.where(y < y_percentile)[0]  # y < y_percentile
-    print("y:")
-    print(y)
-    print("y_percentile")
-    print(y_percentile)
+    # uncomment line below for normal operation, also comment the line below that
+#     idx = np.where(y < y_percentile)[0]  # y < y_percentile
+    idx = np.where(y > 0.)[0]
+#     print("y:")
+#     print(y)
+#     print("y_percentile")
+#     print(y_percentile)
     print("idx")
     print(idx)
     rand_idx = np.random.choice(idx, size=train_size, replace=False)
@@ -304,6 +306,8 @@ def get_experimental_X_y_PET_SHORT(random_state=1, train_size=150, return_test=F
         y_test = gt_test + np.random.randn(*gt_test.shape) * gt_var
         return X_train, y_train, gt_train, X_test, y_test, gt_test
     else:
+        print("Before Partition: ")
+        print(X.shape)
         X_train, gt_train = partition_data(X, y_gt, percentile=50, train_size=train_size, random_state=random_state, return_test=return_test)
         np.random.seed(random_state)
         gt_var = 0.01
